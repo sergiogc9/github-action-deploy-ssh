@@ -1,0 +1,10 @@
+{
+	"root": true,
+	"extends": ["@sergiogc9/eslint-config"],
+	"parserOptions": {
+		"project": "./tsconfig.eslint.json"
+	},
+	"rules": {
+		"no-console": "off"
+	}
+}

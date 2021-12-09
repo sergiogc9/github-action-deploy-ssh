@@ -1,0 +1,25 @@
+name: Deploys a NodeJS service in a remote server
+author: sergiogc9
+description: Deploys a NodeJS service in a remote server using "yarn deploy"
+inputs:
+  host:
+    description: 'The server host'
+    required: true
+  port:
+    description: 'The server port.'
+    required: true
+  username:
+    description: 'Username for authentication.'
+    required: true
+  password:
+    description: 'Password for user authentication.'
+    required: true
+  cwd:
+    description: 'The working directory where the commands are executed'
+    required: true
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
+branding:
+  color: 'green'
+  icon: 'file-text'
