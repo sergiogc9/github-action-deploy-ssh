@@ -25,6 +25,21 @@ A Github action to deploy a NodeJS service in a remote server
     cwd: '/home/user/web/react/'
 ```
 
+**IMPORTANT:**
+
+This action will execute the following scripts inside the remote server connected through SSH:
+
+```bash
+git pull
+yarn deploy
+```
+
+A `deploy` NPM script is needed to perform the necessary deploy actions. Example:
+
+```json
+"deploy": "yarn install && yarn build && pm2 restart server-name",
+```
+
 ### Development
 
 To create a new version follow these steps:
