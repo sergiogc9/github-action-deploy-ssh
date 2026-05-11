@@ -25757,7 +25757,7 @@ const runAction = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const pm = yield detectPackageManager(ssh);
         yield __executeCommand(ssh, `git pull`);
-        yield __executeCommand(ssh, `${pm} deploy`);
+        yield __executeCommand(ssh, `${pm} run deploy`);
         if (ssh.isConnected())
             ssh.dispose();
     }

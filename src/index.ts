@@ -67,7 +67,7 @@ const runAction = async () => {
 		const pm = await detectPackageManager(ssh);
 
 		await __executeCommand(ssh, `git pull`);
-		await __executeCommand(ssh, `${pm} deploy`);
+		await __executeCommand(ssh, `${pm} run deploy`);
 
 		if (ssh.isConnected()) ssh.dispose();
 	} catch (e) {
