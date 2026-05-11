@@ -1,6 +1,6 @@
 {
 	"name": "@sergiogc9/github-action-deploy-ssh",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"author": "Sergio Gómez Cosgaya (sergiogcosgaya@gmail.com)",
 	"description": "Deploys a NodeJS service in a remote server",
 	"repository": {
