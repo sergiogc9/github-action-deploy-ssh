@@ -3,7 +3,7 @@ import { NodeSSH } from 'node-ssh';
 
 const __executeCommand = async (sshInstance: NodeSSH, command: string) => {
 	core.info(`Executing: ${command}`);
-	const wrappedCommand = `$SHELL -lc ${JSON.stringify(command)}`;
+	const wrappedCommand = `$SHELL -ilc ${JSON.stringify(command)}`;
 	const response = await sshInstance.exec(wrappedCommand, [], {
 		cwd: core.getInput('cwd', { required: true }),
 		stream: 'both',
