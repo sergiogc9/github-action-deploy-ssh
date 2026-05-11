@@ -14320,7 +14320,7 @@ let AESGCMDecipher;
 let ChaChaPolyDecipher;
 let GenericDecipher;
 try {
-  binding = __nccwpck_require__(9041);
+  binding = __nccwpck_require__(9623);
   ({ AESGCMCipher, ChaChaPolyCipher, GenericCipher,
      AESGCMDecipher, ChaChaPolyDecipher, GenericDecipher } = binding);
 } catch {}
@@ -25713,6 +25713,29 @@ const __executeCommand = (sshInstance, command) => __awaiter(void 0, void 0, voi
     if (response.code !== 0)
         throw new Error(response.stderr);
 });
+const detectPackageManager = (sshInstance) => __awaiter(void 0, void 0, void 0, function* () {
+    const explicit = core.getInput('package_manager');
+    if (explicit) {
+        core.info(`Using explicitly configured package manager: ${explicit}`);
+        return explicit;
+    }
+    const cwd = core.getInput('cwd', { required: true });
+    try {
+        const result = yield sshInstance.exec('test', ['-f', 'pnpm-lock.yaml'], {
+            cwd,
+            stream: 'both'
+        });
+        if (result.code === 0) {
+            core.info('Detected pnpm (found pnpm-lock.yaml)');
+            return 'pnpm';
+        }
+    }
+    catch (_a) {
+        // not found, continue
+    }
+    core.info('Defaulting to yarn');
+    return 'yarn';
+});
 const runAction = () => __awaiter(void 0, void 0, void 0, function* () {
     core.info(`Running action...`);
     const ssh = new node_ssh_1.NodeSSH();
@@ -25731,8 +25754,9 @@ const runAction = () => __awaiter(void 0, void 0, void 0, function* () {
         process.abort();
     }
     try {
+        const pm = yield detectPackageManager(ssh);
         yield __executeCommand(ssh, `git pull`);
-        yield __executeCommand(ssh, 'yarn deploy');
+        yield __executeCommand(ssh, `${pm} deploy`);
         if (ssh.isConnected())
             ssh.dispose();
     }
@@ -25748,10 +25772,11 @@ runAction();
 
 /***/ }),
 
-/***/ 9041:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+/***/ 9623:
+/***/ ((module) => {
 
-module.exports = require(__nccwpck_require__.ab + "lib/protocol/crypto/build/Release/sshcrypto.node")
+module.exports = eval("require")("./crypto/build/Release/sshcrypto.node");
+
 
 /***/ }),
 
