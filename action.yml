@@ -1,6 +1,6 @@
 name: Deploys a NodeJS service in a remote server
 author: sergiogc9
-description: Deploys a NodeJS service in a remote server using "yarn deploy"
+description: Deploys a NodeJS service in a remote server using the detected package manager
 inputs:
   host:
     description: 'The server host'
@@ -17,6 +17,9 @@ inputs:
   cwd:
     description: 'The working directory where the commands are executed'
     required: true
+  package_manager:
+    description: 'Package manager to use (yarn or pnpm). Auto-detected from lock files if not specified.'
+    required: false
 runs:
   using: 'node16'
   main: 'dist/index.js'

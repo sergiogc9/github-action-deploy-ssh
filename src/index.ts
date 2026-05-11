@@ -17,6 +17,32 @@ const __executeCommand = async (sshInstance: NodeSSH, command: string) => {
 	if (response.code !== 0) throw new Error(response.stderr);
 };
 
+const detectPackageManager = async (sshInstance: NodeSSH): Promise<string> => {
+	const explicit = core.getInput('package_manager');
+	if (explicit) {
+		core.info(`Using explicitly configured package manager: ${explicit}`);
+		return explicit;
+	}
+
+	const cwd = core.getInput('cwd', { required: true });
+
+	try {
+		const result = await sshInstance.exec('test', ['-f', 'pnpm-lock.yaml'], {
+			cwd,
+			stream: 'both'
+		});
+		if (result.code === 0) {
+			core.info('Detected pnpm (found pnpm-lock.yaml)');
+			return 'pnpm';
+		}
+	} catch {
+		// not found, continue
+	}
+
+	core.info('Defaulting to yarn');
+	return 'yarn';
+};
+
 const runAction = async () => {
 	core.info(`Running action...`);
 
@@ -37,8 +63,10 @@ const runAction = async () => {
 	}
 
 	try {
+		const pm = await detectPackageManager(ssh);
+
 		await __executeCommand(ssh, `git pull`);
-		await __executeCommand(ssh, 'yarn deploy');
+		await __executeCommand(ssh, `${pm} deploy`);
 
 		if (ssh.isConnected()) ssh.dispose();
 	} catch (e) {

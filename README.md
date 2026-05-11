@@ -4,13 +4,14 @@ A Github action to deploy a NodeJS service in a remote server
 
 ### Options
 
-| Option     | Description                                            | Type   | Default |            |
-| ---------- | ------------------------------------------------------ | ------ | ------- | ---------- |
-| `host`     | The server host.                                       | string |         | `required` |
-| `port`     | The server port.                                       | number |         | `required` |
-| `username` | Username for authentication.                           | string |         | `required` |
-| `password` | Password for user authentication.                      | string |         | `required` |
-| `cwd`      | The working directory where the commands are executed. | string |         | `required` |
+| Option            | Description                                                                                | Type   | Default |            |
+| ----------------- | ------------------------------------------------------------------------------------------ | ------ | ------- | ---------- |
+| `host`            | The server host.                                                                           | string |         | `required` |
+| `port`            | The server port.                                                                           | number |         | `required` |
+| `username`        | Username for authentication.                                                               | string |         | `required` |
+| `password`        | Password for user authentication.                                                          | string |         | `required` |
+| `cwd`             | The working directory where the commands are executed.                                     | string |         | `required` |
+| `package_manager` | Package manager to use (`yarn` or `pnpm`). Auto-detected from lock files if not specified. | string |         | `optional` |
 
 ### Example usage
 
@@ -31,8 +32,10 @@ This action will execute the following scripts inside the remote server connecte
 
 ```bash
 git pull
-yarn deploy
+<package_manager> deploy
 ```
+
+The package manager is auto-detected by looking for `pnpm-lock.yaml` in the working directory. If not found, it defaults to `yarn`. You can also explicitly set it using the `package_manager` input.
 
 A `deploy` NPM script is needed to perform the necessary deploy actions. Example:
 
