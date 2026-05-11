@@ -25700,7 +25700,8 @@ const core = __importStar(__nccwpck_require__(2186));
 const node_ssh_1 = __nccwpck_require__(7334);
 const __executeCommand = (sshInstance, command) => __awaiter(void 0, void 0, void 0, function* () {
     core.info(`Executing: ${command}`);
-    const response = yield sshInstance.exec(command, [], {
+    const wrappedCommand = `bash -lc ${JSON.stringify(command)}`;
+    const response = yield sshInstance.exec(wrappedCommand, [], {
         cwd: core.getInput('cwd', { required: true }),
         stream: 'both',
         onStdout(chunk) {
